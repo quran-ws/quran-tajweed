@@ -128,6 +128,12 @@ for (const rule of corpus.rules) {
   } else if (isMultiGroup && rule.gap !== 'not-a-pattern') {
     problems.push(`rule ${rule.id} has ${groupCount} groups but no focus`)
   }
+  if (rule.focusStartsAt === 'tanween') {
+    const first = rule.focus ? rule.case.split('+')[rule.focus[0]]! : ''
+    if (!/[\u064B-\u064D]/u.test(first)) {
+      problems.push(`rule ${rule.id} focuses on a tanween its first focus group does not have`)
+    }
+  }
 
   // The bracket structure of a CASE, checked before anything reads it.
   //

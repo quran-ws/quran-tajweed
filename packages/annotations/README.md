@@ -51,7 +51,9 @@ is `مَٰ` and the ruling is on `ٰ` alone; in قلقلة صغرى the match is
 qalqalah letter and the letter after it, and the focus is the qalqalah letter.
 A three-number span's focus is the whole span. Idgham and izhar, rulings
 between two letters, keep both in the focus; ikhfa and iqlab keep only the
-noon, tanween or meem.
+noon, tanween or meem. A tanween ruling is on the tanween, so its focus starts at
+the tanween mark, not at the letter carrying it: the tanween alone for izhar,
+ikhfa and iqlab, the tanween through the next letter for idgham.
 
 ```js
 const [start, end, rule, focusStart = start, focusEnd = end] = span

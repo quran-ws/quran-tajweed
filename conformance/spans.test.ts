@@ -99,6 +99,22 @@ describe.each(editions)('spans index the text they were computed from — $id', 
     expect(problems.slice(0, 10)).toEqual([])
   })
 
+  it('starts every tanween focus at the tanween, never on the letter carrying it', () => {
+    // Any tanween spelling the normaliser folds, or the haraka and small meem of إقلاب.
+    const tanween = /^[\u064B-\u064D\u0656\u0657\u065E\u08F0-\u08F2]|^[\u064E-\u0651]*[\u06E2\u06ED]/u
+    const byId = new Map(typed.rules.map((rule) => [rule.id, rule]))
+    const problems: string[] = []
+    for (const reference of references) {
+      const chars = toCodePoints(edition.ayahs[reference]!)
+      for (const span of engine.analyze(edition.ayahs[reference]!)) {
+        if (byId.get(span.ruleId)?.focusStartsAt !== 'tanween') continue
+        const focus = chars.slice(span.focusStart, span.focusEnd).join('')
+        if (!tanween.test(focus)) problems.push(`${reference} ${span.ruleId} focus ${focus}`)
+      }
+    }
+    expect(problems.slice(0, 10)).toEqual([])
+  })
+
   it('reports a zero-width span only from the one rule known to, and only as often', () => {
     const zeroWidth = new Map<string, number>()
     for (const reference of references) {

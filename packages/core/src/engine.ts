@@ -9,7 +9,25 @@
 import { compileRule, FOCUS_GROUP } from './compile.js'
 import { normalize, type Normalized } from './normalize.js'
 import { toSourceRange } from './mapped.js'
-import { toCodePoints } from './unicode.js'
+import {
+  DAMMA,
+  DAMMATAN,
+  FATHA,
+  FATHATAN,
+  FATHATAN_VERTICAL,
+  INVERTED_DAMMA,
+  KASRA,
+  KASRATAN,
+  OPEN_DAMMATAN,
+  OPEN_FATHATAN,
+  OPEN_KASRATAN,
+  SHADDA,
+  SMALL_HIGH_MEEM,
+  SMALL_LOW_MEEM,
+  SUBSCRIPT_ALEF,
+  isStackedMark,
+  toCodePoints,
+} from './unicode.js'
 import type { Corpus, Rule, Span } from './types.js'
 
 export interface TajweedOptions {
@@ -145,6 +163,9 @@ export class Tajweed {
             ? { start: focusStart, end: focusEnd }
             : toSourceRange(normalized, focusStart, focusEnd, normalized.sourceLength)
         }
+        if (entry.rule.focusStartsAt === 'tanween') {
+          focus = atTanween(ayahText, focus, entry.rule.focus)
+        }
 
         spans.push({
           ...range,
@@ -187,6 +208,58 @@ export class Tajweed {
     }
     return cached
   }
+}
+
+/**
+ * Every character an edition writes a tanween with: the standalone tanween, and
+ * the positional and open forms the normaliser folds onto it (normalize.ts).
+ */
+const TANWEEN = new Set([
+  FATHATAN, DAMMATAN, KASRATAN,
+  INVERTED_DAMMA, FATHATAN_VERTICAL, SUBSCRIPT_ALEF,
+  OPEN_FATHATAN, OPEN_DAMMATAN, OPEN_KASRATAN,
+])
+const SMALL_MEEM = new Set([SMALL_HIGH_MEEM, SMALL_LOW_MEEM])
+/** What may stand before the small meem of an إقلاب tanween: its haraka, and a shadda (غَمَّۢا). */
+const BEFORE_SMALL_MEEM = new Set([FATHA, DAMMA, KASRA, SHADDA])
+
+/**
+ * Moves a focus to start at the tanween inside it. A focus of one group becomes
+ * the tanween alone; a focus of more groups runs from the tanween to its end.
+ *
+ * Before ب the script writes the tanween of إقلاب as one haraka and a small
+ * meem (مُۢ), with no tanween character; there the haraka and the meem are the
+ * tanween. Left as it is if the focus holds neither.
+ */
+function atTanween(
+  text: string,
+  focus: { start: number; end: number },
+  groups: readonly [number, number] | undefined,
+): { start: number; end: number } {
+  const chars = toCodePoints(text)
+  const single = !groups || groups[0] === groups[1]
+  // Normalisation reorders a shadda and its tanween (حَقࣲّ), so the focus mapped
+  // back can stop before a tanween written after the shadda. Search on through
+  // the marks still on the same letter.
+  let limit = focus.end
+  while (limit < chars.length && isStackedMark(chars[limit])) {
+    limit += 1
+  }
+  for (let index = focus.start; index < limit; index += 1) {
+    if (TANWEEN.has(chars[index]!)) {
+      return { start: index, end: single ? index + 1 : Math.max(focus.end, index + 1) }
+    }
+  }
+  for (let index = focus.start; index < limit; index += 1) {
+    if (SMALL_MEEM.has(chars[index]!)) {
+      let start = index
+      while (start > focus.start && BEFORE_SMALL_MEEM.has(chars[start - 1]!)) {
+        start -= 1
+      }
+      return { start, end: single ? index + 1 : Math.max(focus.end, index + 1) }
+    }
+  }
+  return focus
 }
 
 /**

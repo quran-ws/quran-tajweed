@@ -71,6 +71,14 @@ export interface Rule {
    * is the focus.
    */
   readonly focus?: readonly [number, number]
+  /**
+   * Where in its first group the focus begins. `tanween`: at the tanween mark,
+   * because a tanween ruling is on the tanween, not on the letter carrying it.
+   * With a one-group focus the focus is then the tanween alone (izhar, ikhfa,
+   * iqlab); with two groups it runs from the tanween through the next letter
+   * (idgham).
+   */
+  readonly focusStartsAt?: 'tanween'
 }
 
 export interface Corpus {

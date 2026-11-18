@@ -272,6 +272,10 @@
           "minItems": 2,
           "maxItems": 2
         },
+        "focusStartsAt": {
+          "enum": ["tanween"],
+          "description": "Where in its first group the focus begins. `tanween`: at the tanween mark, because a tanween ruling is on the tanween, not on the letter carrying it. A one-group focus is then the tanween alone (izhar, ikhfa, iqlab); a two-group focus runs from the tanween through the next letter (idgham). Requires `focus`."
+        },
         "startFrom": {
           "type": "string",
           "description": "Editorial annotation, NOT a pattern — do not compile it. Depending on the rule it marks where a highlight should visually begin (typically the first group of `case`), or gives the plain undiacritised spelling of the target word."

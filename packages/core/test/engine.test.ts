@@ -191,6 +191,31 @@ describe('focus', () => {
     expect([...text].slice(span.focusStart, span.focusEnd).join('').replace(/\s/g, '')).toBe('مم')
   })
 
+  it('narrows a tanween ruling to the tanween, not the letter carrying it', () => {
+    // 2:10 مَرَضࣱ فَزَادَهُمُ: إخفاء of the tanween; the ض only carries it. This
+    // edition writes the open dammatan as U+065E.
+    const text = ayah('2:10')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'ikhfa-haqiqi-tanween.2')!
+    expect([...text].slice(span.start, span.end).join('')).toMatch(/^ض/u)
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('\u{065E}')
+  })
+
+  it('narrows إقلاب of a tanween to its haraka and small meem', () => {
+    // 2:10 أَلِيمُۢ بِمَا: the tanween of iqlab is written ُ + ۢ.
+    const text = ayah('2:10')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'iqlab-tanween.2')!
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('\u{064F}\u{06E2}')
+  })
+
+  it('runs a tanween إدغام from the tanween through the next letter', () => {
+    // 2:7 غِشَٰوَةࣱۖ وَلَهُمۡ: the tanween merges into the و; the ة is not coloured.
+    const text = ayah('2:7')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'idgham-bi-ghunnah-tanween.2')!
+    const focus = [...text].slice(span.focusStart, span.focusEnd).join('')
+    expect(focus.startsWith('\u{065E}')).toBe(true)
+    expect(focus.endsWith('و')).toBe(true)
+  })
+
   it('is the whole span for a rule without a focus', () => {
     for (const span of engine.analyze(text)) {
       const rule = typed.rules.find((r) => r.id === span.ruleId)!

@@ -10,7 +10,7 @@
 
 import { resolveOverlaps, toFocus } from './engine.js'
 import { bridgeJoins, clusterEndIn } from './shaping.js'
-import { ALLOWED_MARKS, toCodePoints } from './unicode.js'
+import { ALLOWED_MARKS, isStackedMark, toCodePoints } from './unicode.js'
 import type { Corpus, Span } from './types.js'
 
 /**
@@ -94,7 +94,9 @@ export function toHtml(ayahText: string, spans: readonly Span[], corpus: Corpus,
   let cursor = 0
 
   for (const span of ordered) {
-    const start = clusterEndIn(chars, span.start)
+    // A focus can start on a mark (a tanween ruling is on the tanween). Text
+    // cannot colour a mark apart from its letter, so the letter comes with it.
+    const start = clusterStartIn(chars, span.start)
     const end = clusterEndIn(chars, span.end)
     if (start < cursor) {
       continue
@@ -156,6 +158,15 @@ const ANSI: Readonly<Record<string, string>> = {
   qalqalah: '[38;5;28m',
 }
 const RESET = '[0m'
+
+/** Moves an offset that lands on a mark back to the letter the mark is written on. */
+function clusterStartIn(chars: readonly string[], start: number): number {
+  let out = start
+  while (out > 0 && isStackedMark(chars[out])) {
+    out -= 1
+  }
+  return out
+}
 
 /** The same colouring for a terminal. */
 export function toAnsi(ayahText: string, spans: readonly Span[]): string {

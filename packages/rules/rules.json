@@ -921,6 +921,7 @@
       "hukum": "ikhfa-ghunnah-tarqeeq",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً] + [ ذ ث ك ج ش س د ز ف ت ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -932,6 +933,7 @@
       "hukum": "ikhfa-ghunnah-tarqeeq",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ ذ ث ك ج ش س د ز ف ت ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -943,6 +945,7 @@
       "hukum": "ikhfa-ghunnah-tarqeeq",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ ًى] + [ ذ ث ك ج ش س د ز ف ت ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -965,6 +968,7 @@
       "hukum": "ikhfa-ghunnah-tafkheem",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ص ق ط ض ظ ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -976,6 +980,7 @@
       "hukum": "ikhfa-ghunnah-tafkheem",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ ص ق ط ض ظ ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -987,6 +992,7 @@
       "hukum": "ikhfa-ghunnah-tafkheem",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ص ق ط ض ظ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -1481,6 +1487,7 @@
       "hukum": "mutamathilain-idgham-kamil",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ن ]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -1492,6 +1499,7 @@
       "hukum": "mutamathilain-idgham-kamil",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ ن ]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -1503,6 +1511,7 @@
       "hukum": "mutamathilain-idgham-kamil",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ن ]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2025,6 +2034,7 @@
       "hukum": "izhar-halqi-tanween",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ء أ ؤ ئ إ ه ع ح غ خ]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2036,6 +2046,7 @@
       "hukum": "izhar-halqi-tanween",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ ء أ ؤ ئ إ ه ع ح غ خ]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2047,6 +2058,7 @@
       "hukum": "izhar-halqi-tanween",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ء أ ؤ ئ إ ه ع ح غ خ]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2069,6 +2081,7 @@
       "hukum": "idgham-bi-ghunnah-tanween",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ي ن م و]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2080,6 +2093,7 @@
       "hukum": "idgham-bi-ghunnah-tanween",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ي ن م و]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2091,6 +2105,7 @@
       "hukum": "idgham-bi-ghunnah-tanween",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ي ن م و]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2113,6 +2128,7 @@
       "hukum": "idgham-bila-ghunnah-tanween",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ل ر]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2124,6 +2140,7 @@
       "hukum": "idgham-bila-ghunnah-tanween",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ل ر]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2135,6 +2152,7 @@
       "hukum": "idgham-bila-ghunnah-tanween",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ل ر]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2157,6 +2175,7 @@
       "hukum": "idgham-kamil-tanween",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ن ر م ل]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2168,6 +2187,7 @@
       "hukum": "idgham-kamil-tanween",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ن ر م ل]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2179,6 +2199,7 @@
       "hukum": "idgham-kamil-tanween",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ن ر م ل]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2201,6 +2222,7 @@
       "hukum": "idgham-naqis-tanween",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ي و]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2212,6 +2234,7 @@
       "hukum": "idgham-naqis-tanween",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ي و ]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2223,6 +2246,7 @@
       "hukum": "idgham-naqis-tanween",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ي و]",
       "focus": [0, 1],
+      "focusStartsAt": "tanween",
       "scope": "across-words",
       "status": "stable",
       "label": {
@@ -2245,6 +2269,7 @@
       "hukum": "iqlab-tanween",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + ب",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2256,6 +2281,7 @@
       "hukum": "iqlab-tanween",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + ب",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2267,6 +2293,7 @@
       "hukum": "iqlab-tanween",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + ب",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2289,6 +2316,7 @@
       "hukum": "ikhfa-haqiqi-tanween",
       "case": "[ءً أً ؤً ئً بً تً ثً جً حً خً دً ذً رً زً سً شً صً ضً طً ظً عً غً فً قً كً لً مً نً هً وً يً ًا ةً ًى] + [ ص ذ ث ك ج ش ق س د ط ز ف ت ض ظ ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2300,6 +2328,7 @@
       "hukum": "ikhfa-haqiqi-tanween",
       "case": "[ءٌ أٌ ؤٌ ئٌ بٌ تٌ ثٌ جٌ حٌ خٌ دٌ ذٌ رٌ زٌ سٌ شٌ صٌ ضٌ طٌ ظٌ عٌ غٌ فٌ قٌ كٌ لٌ مٌ نٌ هٌ وٌ يٌ ةٌ] + [ ص ذ ث ك ج ش ق س د ط ز ف ت ض ظ ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
@@ -2311,6 +2340,7 @@
       "hukum": "ikhfa-haqiqi-tanween",
       "case": "[ءٍ أٍ ؤٍ ئٍ بٍ تٍ ثٍ جٍ حٍ خٍ دٍ ذٍ رٍ زٍ سٍ شٍ صٍ ضٍ طٍ ظٍ عٍ غٍ فٍ قٍ كٍ لٍ مٍ نٍ هٍ وٍ يٍ ةٍ] + [ ص ذ ث ك ج ش ق س د ط ز ف ت ض ظ ]",
       "focus": [0, 0],
+      "focusStartsAt": "tanween",
       "scope": "either",
       "status": "stable",
       "label": {
