@@ -73,7 +73,7 @@ const pinned = new Set(pinnedRules)
  * check in the first place. Deriving it would rebuild the defect inside its own
  * fix.
  */
-const EXPECTED_FIXTURE_COUNT = 8
+const EXPECTED_FIXTURE_COUNT = 12
 
 /**
  * Rules that SHOULD have a fixture and do not. Pinned by name, not waved through.
@@ -100,8 +100,6 @@ const KNOWN_UNPINNED_ORIGINAL = [
 ]
 
 const KNOWN_UNPINNED_NEEDS_REVIEW = [
-  'madd-munfasil.2',
-  'madd-munfasil.4',
   'madd-muttasil.2',
   'madd-muttasil.3',
 ]

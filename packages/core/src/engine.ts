@@ -10,6 +10,7 @@ import { compileRule, FOCUS_GROUP } from './compile.js'
 import { normalize, type Normalized } from './normalize.js'
 import { toSourceRange } from './mapped.js'
 import {
+  ALEF,
   DAMMA,
   DAMMATAN,
   FATHA,
@@ -21,8 +22,11 @@ import {
   OPEN_DAMMATAN,
   OPEN_FATHATAN,
   OPEN_KASRATAN,
+  RECTANGULAR_ZERO,
+  ROUNDED_ZERO,
   SHADDA,
   SMALL_HIGH_MEEM,
+  SUKOON,
   SMALL_LOW_MEEM,
   SUBSCRIPT_ALEF,
   isStackedMark,
@@ -166,16 +170,22 @@ export class Tajweed {
         if (entry.rule.focusStartsAt === 'tanween') {
           focus = atTanween(ayahText, focus, entry.rule.focus)
         }
+        // A rule across two words is about reading on into the next word, and an alef
+        // marked ۠ (أَنَا۠، لَّٰكِنَّا۠) is not read when the reading goes on. Such a
+        // letter cannot be the madd of المد المنفصل.
+        const silent = entry.rule.scope === 'across-words' && carriesSilentAlefMark(ayahText, focus)
 
-        spans.push({
-          ...range,
-          focusStart: focus.start,
-          focusEnd: focus.end,
-          ruleId: entry.rule.id,
-          hukumId: entry.hukumId,
-          categoryId: entry.categoryId,
-          topicId: entry.topicId,
-        })
+        if (!silent) {
+          spans.push({
+            ...range,
+            focusStart: focus.start,
+            focusEnd: focus.end,
+            ruleId: entry.rule.id,
+            hukumId: entry.hukumId,
+            categoryId: entry.categoryId,
+            topicId: entry.topicId,
+          })
+        }
 
         // A pattern that can match empty would otherwise loop forever.
         if (match[0].length === 0) {
@@ -260,6 +270,29 @@ function atTanween(
     }
   }
   return focus
+}
+
+/**
+ * True if the focus's first letter carries a mark saying it is not read when the
+ * reading continues: ۠ (U+06E0, أَنَا۠) or ۟ (U+06DF), or, on an alef, the round
+ * sukun U+0652 (نَبۡلُوَاْ) — the KFGQPC text writes a real sukun as U+06E1, and a
+ * madd alef never carries one. Only the first letter's own marks count: in
+ * قَالُوٓا۟ the ۟ is on the alef after the madd letter, and the madd is real.
+ */
+function carriesSilentAlefMark(text: string, focus: { start: number; end: number }): boolean {
+  const chars = toCodePoints(text)
+  const onAlef = chars[focus.start] === ALEF
+  const silent = (char: string | undefined): boolean =>
+    char === RECTANGULAR_ZERO || char === ROUNDED_ZERO || (onAlef && char === SUKOON)
+  for (let index = focus.start + 1; index < chars.length; index += 1) {
+    if (silent(chars[index])) {
+      return true
+    }
+    if (!isStackedMark(chars[index])) {
+      return false
+    }
+  }
+  return false
 }
 
 /**

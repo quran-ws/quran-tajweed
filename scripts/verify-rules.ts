@@ -48,6 +48,33 @@ interface Expectation {
 
 const EXPECTATIONS: readonly Expectation[] = [
   {
+    rule: 'madd-munfasil.1',
+    matches: ['101:3', '2:12', '2:32'],
+    avoids: ['1:1'],
+    exactlyOccurrences: 1359,
+    why: 'وَمَآ أَدۡرَىٰكَ، أَلَآ إِنَّهُمۡ — ألف مدية آخر الكلمة والهمزة أول التي بعدها، والهمزة قد تكون تحت الألف',
+  },
+  {
+    rule: 'madd-munfasil.2',
+    matches: ['12:16'],
+    exactlyOccurrences: 1,
+    why: 'وَجَآءُوٓ أَبَاهُمۡ — واو مدية آخر الكلمة بلا ألف بعدها',
+  },
+  {
+    rule: 'madd-munfasil.3',
+    matches: ['2:14'],
+    avoids: ['1:1'],
+    exactlyOccurrences: 521,
+    why: 'قَالُوٓاْ ءَامَنَّا — واو الجماعة المدية وبعدها ألف لا تُقرأ، والهمزة أول الكلمة التالية',
+  },
+  {
+    rule: 'madd-munfasil.4',
+    matches: ['2:40'],
+    avoids: ['1:1'],
+    exactlyOccurrences: 427,
+    why: 'يَٰبَنِيٓ إِسۡرَٰٓءِيلَ — ياء مدية آخر الكلمة والهمزة أول التي بعدها',
+  },
+  {
     rule: 'madd-lazim-kalimi-muthaqqal.1',
     matches: ['1:7', '69:1', '79:34', '80:33', '2:164'],
     avoids: ['1:1', '1:2'],

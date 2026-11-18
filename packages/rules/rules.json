@@ -2682,10 +2682,14 @@
     {
       "id": "madd-munfasil.1",
       "hukum": "madd-munfasil",
-      "case": "[أَ ؤَ ئَ ءَ بَ تَ ثَ جَ حَ خَ دَ ذَ رَ زَ سَ شَ صَ ضَ طَ ظَ عَ غَ فَ قَ كَ لَ مَ نَ هَ وَ يَ ] + [ا ى الألف الخنجرية] + [أ ؤ ئ ء]",
+      "case": "[أَ ؤَ ئَ ءَ بَ تَ ثَ جَ حَ خَ دَ ذَ رَ زَ سَ شَ صَ ضَ طَ ظَ عَ غَ فَ قَ كَ لَ مَ نَ هَ وَ يَ ] + [ا ى الألف الخنجرية] + [أ إ ؤ ئ ء]",
       "focus": [1, 1],
       "scope": "across-words",
       "status": "stable",
+      "needsReview": true,
+      "corrections": [
+        {"field": "case", "was": "[أَ ؤَ ئَ ءَ بَ تَ ثَ جَ حَ خَ دَ ذَ رَ زَ سَ شَ صَ ضَ طَ ظَ عَ غَ فَ قَ كَ لَ مَ نَ هَ وَ يَ ] + [ا ى الألف الخنجرية] + [أ ؤ ئ ء]", "reason": "The hamza group left out إ, so every المد المنفصل before a word that opens with hamza-below was missed: أَلَآ إِنَّهُمۡ، إِلَّآ إِبۡلِيسَ، يَٰبَنِيٓ إِسۡرَٰٓءِيلَ. In quran-ws/quran-text 529 places carry the maddah of this madd before such a word; none matched."}
+      ],
       "label": {
         "ar": "الألف الساكنة المسبوقة بحرف مفتوح في نهاية الكلمة والمتبوعة بهمزة في بداية الكلمة التالية"
       }
@@ -2693,12 +2697,13 @@
     {
       "id": "madd-munfasil.2",
       "hukum": "madd-munfasil",
-      "case": "[أُ ؤُ ئُ ءُ بُ تُ ثُ جُ حُ خُ دُ ذُ رُ زُ سُ شُ صُ ضُ طُ ظُ عُ غُ فُ قُ كُ لُ مُ نُ هُ وُ يُ ] + [و وْ ] + [أ ؤ ئ ء]",
+      "case": "[أُ ؤُ ئُ ءُ بُ تُ ثُ جُ حُ خُ دُ ذُ رُ زُ سُ شُ صُ ضُ طُ ظُ عُ غُ فُ قُ كُ لُ مُ نُ هُ وُ يُ ] + [و وْ ] + [أ إ ؤ ئ ء]",
       "focus": [1, 1],
       "scope": "across-words",
       "status": "stable",
       "needsReview": true,
       "corrections": [
+        {"field": "case", "was": "[أُ ؤُ ئُ ءُ بُ تُ ثُ جُ حُ خُ دُ ذُ رُ زُ سُ شُ صُ ضُ طُ ظُ عُ غُ فُ قُ كُ لُ مُ نُ هُ وُ يُ ] + [و وْ ] + [أ ؤ ئ ء]", "reason": "The hamza group left out إ, so every المد المنفصل before a word that opens with hamza-below was missed: أَلَآ إِنَّهُمۡ، إِلَّآ إِبۡلِيسَ، يَٰبَنِيٓ إِسۡرَٰٓءِيلَ. In quran-ws/quran-text 529 places carry the maddah of this madd before such a word; none matched."},
         {
           "field": "case",
           "was": "[أُ ؤُ ئُ ءُ بُ تُ ثُ جُ حُ خُ دُ ذُ رُ زُ سُ شُ صُ ضُ طُ ظُ عُ غُ فُ قُ كُ لُ مُ نُ هُ وُ يُ ] + [ا ى ] + [أ ؤ ئ ء]",
@@ -2713,10 +2718,14 @@
     {
       "id": "madd-munfasil.3",
       "hukum": "madd-munfasil",
-      "case": "[أُ ؤُ ئُ ءُ بُ تُ ثُ جُ حُ خُ دُ ذُ رُ زُ سُ شُ صُ ضُ طُ ظُ عُ غُ فُ قُ كُ لُ مُ نُ هُ وُ يُ ] + [وا وْا] + [أ ؤ ئ ء]",
+      "case": "[أُ ؤُ ئُ ءُ بُ تُ ثُ جُ حُ خُ دُ ذُ رُ زُ سُ شُ صُ ضُ طُ ظُ عُ غُ فُ قُ كُ لُ مُ نُ هُ وُ يُ ] + [وا وْا] + [أ إ ؤ ئ ء]",
       "focus": [1, 1],
       "scope": "across-words",
       "status": "stable",
+      "needsReview": true,
+      "corrections": [
+        {"field": "case", "was": "[أُ ؤُ ئُ ءُ بُ تُ ثُ جُ حُ خُ دُ ذُ رُ زُ سُ شُ صُ ضُ طُ ظُ عُ غُ فُ قُ كُ لُ مُ نُ هُ وُ يُ ] + [وا وْا] + [أ ؤ ئ ء]", "reason": "The hamza group left out إ, so every المد المنفصل before a word that opens with hamza-below was missed: أَلَآ إِنَّهُمۡ، إِلَّآ إِبۡلِيسَ، يَٰبَنِيٓ إِسۡرَٰٓءِيلَ. In quran-ws/quran-text 529 places carry the maddah of this madd before such a word; none matched."}
+      ],
       "label": {
         "ar": "واو الجماعة الساكنة المسبوقة بحرف مضموم والمتبوعة بهمزة في بداية الكلمة التالية (الألف بعد الواو هي ألف التفريق)"
       }
@@ -2724,12 +2733,13 @@
     {
       "id": "madd-munfasil.4",
       "hukum": "madd-munfasil",
-      "case": "[أِ ؤِ ئِ ءِ بِ تِ ثِ جِ حِ خِ دِ ذِ رِ زِ سِ شِ صِ ضِ طِ ظِ عِ غِ فِ قِ كِ لِ مِ نِ هِ وِ يِ ] + [ي يْ] + [أ ؤ ئ ء]",
+      "case": "[أِ ؤِ ئِ ءِ بِ تِ ثِ جِ حِ خِ دِ ذِ رِ زِ سِ شِ صِ ضِ طِ ظِ عِ غِ فِ قِ كِ لِ مِ نِ هِ وِ يِ ] + [ي يْ] + [أ إ ؤ ئ ء]",
       "focus": [1, 1],
       "scope": "across-words",
       "status": "stable",
       "needsReview": true,
       "corrections": [
+        {"field": "case", "was": "[أِ ؤِ ئِ ءِ بِ تِ ثِ جِ حِ خِ دِ ذِ رِ زِ سِ شِ صِ ضِ طِ ظِ عِ غِ فِ قِ كِ لِ مِ نِ هِ وِ يِ ] + [ي يْ] + [أ ؤ ئ ء]", "reason": "The hamza group left out إ, so every المد المنفصل before a word that opens with hamza-below was missed: أَلَآ إِنَّهُمۡ، إِلَّآ إِبۡلِيسَ، يَٰبَنِيٓ إِسۡرَٰٓءِيلَ. In quran-ws/quran-text 529 places carry the maddah of this madd before such a word; none matched."},
         {
           "field": "case",
           "was": "[أِ ؤِ ئِ ءِ بِ تِ ثِ جِ حِ خِ دِ ذِ رِ زِ سِ شِ صِ ضِ طِ ظِ عِ غِ فِ قِ كِ لِ مِ نِ هِ وِ يِ ] + [ا ى الألف الخنجرية] + [أ ؤ ئ ء]",

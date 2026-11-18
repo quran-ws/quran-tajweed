@@ -232,3 +232,34 @@ describe('focus', () => {
     expect([...text].slice(qalqalah.start, qalqalah.end).join('')).toBe('بۡ')
   })
 })
+
+describe('المد المنفصل', () => {
+  const engine = new Tajweed(typed)
+  const focusesOf = (reference: string, prefix: string): string[] => {
+    const text = ayah(reference)
+    return engine
+      .analyze(text)
+      .filter((s) => s.ruleId.startsWith(prefix))
+      .map((s) => [...text].slice(s.focusStart, s.focusEnd).join(''))
+  }
+
+  it('matches where the vowelled letter and the madd letter touch in one word', () => {
+    // 2:14 قَالُوٓاْ ءَامَنَّا: the madd letter ends the word, the hamza begins the next.
+    const focuses = focusesOf('2:14', 'madd-munfasil.3')
+    expect(focuses.length).toBeGreaterThan(0)
+    expect(focuses.every((focus) => focus.startsWith('و'))).toBe(true)
+  })
+
+  it('matches before a word that opens with hamza-below', () => {
+    // 2:12 أَلَآ إِنَّهُمۡ
+    expect(focusesOf('2:12', 'madd-munfasil.1').length).toBeGreaterThan(0)
+  })
+
+  it('does not take an alef that is not read when the reading continues', () => {
+    // 2:258 أَنَا۠ أُحۡيِۦ: the alef of أنا is dropped in continuous reading.
+    const text = ayah('2:258')
+    const at = [...text].join('').indexOf('أَنَا۠')
+    const spans = engine.analyze(text).filter((s) => s.ruleId.startsWith('madd-munfasil'))
+    expect(spans.some((s) => s.focusStart >= at && s.focusStart < at + 6)).toBe(false)
+  })
+})

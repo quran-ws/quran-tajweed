@@ -41,18 +41,17 @@ disabled for exactly this reason.
 | | |
 |---|---|
 | `within-word` | no space at all — both groups are in one word |
-| `across-words` | a separator is required |
+| `across-words` | the last group starts the next word: a space comes before it, and only marks between the groups before it |
 | `either` | a space is allowed but not required |
 
 Diacritics and Quranic annotation marks are always allowed between groups, in
 every scope. That is what lets a pattern be written phonetically — as sounds —
 while the actual text carries marks the pattern never mentions.
 
-`across-words` is looser than its name suggests: a diacritic counts as its
-"required separator" just as well as a space does, so it does not actually
-force the groups into different words. This behaviour is inherited from the
-original system, it affects 22 rules, and tightening it would change the corpus
-— that needs its own review. See [divergences.md](./divergences.md).
+`across-words` places the word break before the last group, which is where it
+falls in every rule that uses it: idgham of a noon or tanween into the next word,
+and المد المنفصل (vowelled letter + madd letter | hamza). See
+[divergences.md](./divergences.md).
 
 ## matchAgainst
 

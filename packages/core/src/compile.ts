@@ -121,20 +121,25 @@ const ALLOWED_ALTERNATION = ALLOWED_MARKS.map(escapeCodePoint).join('|')
 /**
  * What may appear between two groups, by scope.
  *
- * `across-words` is a faithful port of the legacy engine and is looser than its
- * name: it requires at least one separator, but a diacritic satisfies that just
- * as a space does, so it does not actually oblige the groups to be in different
- * words. Tightening it would change what 22 rules match and is left for a change
- * that can be reviewed on its own.
+ * `across-words` puts the word break before the LAST group: the groups before
+ * it are one word (only marks between them), and a space must come before the
+ * last. That is the shape of every rule with this scope: idgham of a noon or
+ * tanween into the next word's first letter, and المد المنفصل, whose madd letter
+ * ends one word and whose hamza begins the next. The legacy engine required "at
+ * least one separator" in every gap, where a diacritic counted as one; that
+ * missed munfasil wherever the vowelled letter and its madd letter touch
+ * (قَالُوٓا۟ ءَامَنَّا), and did not oblige a space at all. See docs/divergences.md.
  */
-function separatorFor(scope: Scope): string {
+function separatorFor(scope: Scope, beforeLastGroup: boolean): string {
   switch (scope) {
     case 'within-word':
       return `(?:${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
     case 'either':
       return `(?:\\s|${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
     case 'across-words':
-      return `(?:\\s+|${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})+`
+      return beforeLastGroup
+        ? `(?:${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*\\s(?:\\s|${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
+        : `(?:${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
   }
 }
 
@@ -243,11 +248,18 @@ export function compileRule(rule: CompilableRule): RegExp {
     return new RegExp(`(?:${group})(?:${ALLOWED_ALTERNATION})*`, 'gu')
   }
 
-  const separator = separatorFor(rule.scope)
   const compiled = groups.map((group) => `(?:${compileGroup(group)})`)
+  // Joins compiled groups `from`..`to` (inclusive) with the separator each gap takes.
+  const joined = (from: number, to: number): string =>
+    compiled
+      .slice(from, to + 1)
+      .map((group, offset) =>
+        offset === 0 ? group : separatorFor(rule.scope, from + offset === groups.length - 1) + group,
+      )
+      .join('')
 
   if (!rule.focus) {
-    return new RegExp(compiled.join(separator), 'gu')
+    return new RegExp(joined(0, groups.length - 1), 'gu')
   }
 
   const [from, to] = rule.focus
@@ -257,11 +269,11 @@ export function compileRule(rule: CompilableRule): RegExp {
 
   // The focus groups, with the separators between them, become one named
   // capture; `d` makes its offsets available. Which positions match is unchanged.
-  const source = [
-    ...compiled.slice(0, from),
-    `(?<${FOCUS_GROUP}>${compiled.slice(from, to + 1).join(separator)})`,
-    ...compiled.slice(to + 1),
-  ].join(separator)
+  const gap = (index: number): string => separatorFor(rule.scope, index === groups.length - 1)
+  const source =
+    (from > 0 ? joined(0, from - 1) + gap(from) : '') +
+    `(?<${FOCUS_GROUP}>${joined(from, to)})` +
+    (to < groups.length - 1 ? gap(to + 1) + joined(to + 1, groups.length - 1) : '')
 
   return new RegExp(source, 'gud')
 }

@@ -1,6 +1,6 @@
 # @quran.ws/tajwid-annotations
 
-Precomputed tajweed annotations for the whole muṣḥaf: **147,255 spans** from
+Precomputed tajweed annotations for the whole muṣḥaf: **149,271 spans** from
 **164 rules**, across **6,235 of the 6,236 āyāt** of the riwāyah of
 **Ḥafṣ ʿan ʿĀṣim**.
 

@@ -153,16 +153,24 @@ were already bracketed in the legacy engine; this makes the two paths agree.
 
 ---
 
-## `across-words` scope does not actually require whitespace
+## `across-words` scope puts the word break before the last group
 
-**Legacy and port both:** the separator between groups compiles to
-`(?:\s+|waqf|marks)+`, and a diacritic satisfies it just as well as a space
-does.
+**Legacy:** the separator between every pair of groups compiled to
+`(?:\s+|waqf|marks)+`: at least one separator, and a diacritic counted as one.
+So the groups were not obliged to be in different words, and المد المنفصل,
+whose vowelled letter and madd letter touch inside one word, matched only where
+some mark happened to sit between them: 292 times in the whole muṣḥaf.
 
-**Not changed.** The name says one thing and the behaviour does another, but
-tightening it would change what 22 rules match. That is a corpus change, not a
-porting detail, and it belongs in its own pull request with before-and-after
-match counts.
+**Now:** in an `across-words` rule the groups before the last are one word, with
+only marks between them, and a space must come before the last group. That is
+the shape of all 22 rules with this scope: idgham of a noon or tanween into the
+next word, and المد المنفصل. The idgham rules match exactly as before. المد
+المنفصل goes from 292 to 2,308, and every place quran-ws/quran-text writes the
+maddah of a madd letter before a word that opens with a hamza (1,787) is now
+matched; nothing any rule matched before is lost. Its four rules also gained
+إ in their hamza group (see their `corrections`), and an across-words match
+whose madd letter is marked as not read when the reading continues (أَنَا۠،
+نَبۡلُوَاْ) is dropped.
 
 ---
 
