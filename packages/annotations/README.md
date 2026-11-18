@@ -1,7 +1,7 @@
 # @quran.ws/tajwid-annotations
 
-Precomputed tajweed annotations for the whole muṣḥaf: **149,271 spans** from
-**164 rules**, across **6,235 of the 6,236 āyāt** of the riwāyah of
+Precomputed tajweed annotations for the whole muṣḥaf: **153,809 spans** from
+**168 rules**, across **6,235 of the 6,236 āyāt** of the riwāyah of
 **Ḥafṣ ʿan ʿĀṣim**.
 
 This package is data only. It has no dependencies and no code. It exists so an
@@ -19,7 +19,7 @@ import annotations from '@quran.ws/tajwid-annotations'
 annotations.corpusVersion   // '0.4.2'
 annotations.riwayah         // 'hafs-an-asim'
 annotations.edition.sha256  // 'b5d29736…' — the text these offsets are measured against
-annotations.ruleIds.length  // 164
+annotations.ruleIds.length  // 168
 ```
 
 ## The shape
@@ -29,7 +29,7 @@ by two more numbers when the ruling is about only part of the match:
 
 ```js
 annotations.spans['1:1']
-// [[8, 10, 52], [17, 18, 22], [22, 25, 129, 24, 25], [30, 31, 22], [33, 36, 131, 35, 36]]
+// [[8, 10, 52], [17, 18, 22], [22, 25, 129, 24, 25], [30, 31, 22], [33, 38, 166, 35, 36], [33, 36, 131, 35, 36]]
 //    ↑   ↑   ↑
 //    │   │   └─ index into annotations.ruleIds
 //    │   └───── end, half-open

@@ -48,6 +48,34 @@ interface Expectation {
 
 const EXPECTATIONS: readonly Expectation[] = [
   {
+    rule: 'madd-arid-lissukoon.1',
+    matches: ['2:165', '2:167', '2:197'],
+    avoids: ['2:1', '1:1'],
+    exactlyOccurrences: 344,
+    why: 'ٱلۡعَذَابِ، ٱلنَّارِ، ٱلۡأَلۡبَٰبِ — ألف مدية قبل آخر حرف في الآية',
+  },
+  {
+    rule: 'madd-arid-lissukoon.2',
+    matches: ['2:3', '2:5'],
+    avoids: ['1:1'],
+    exactlyOccurrences: 1936,
+    why: 'يُنفِقُونَ، ٱلۡمُفۡلِحُونَ — واو مدية قبل آخر حرف في الآية، يُسكَّن للوقف',
+  },
+  {
+    rule: 'madd-arid-lissukoon.3',
+    matches: ['1:1', '1:2', '1:7'],
+    // 112:1 أَحَدٌ has no madd letter before its last letter.
+    avoids: ['112:1'],
+    exactlyOccurrences: 2255,
+    why: 'ٱلرَّحِيمِ، ٱلۡعَٰلَمِينَ، ٱلضَّآلِّينَ — ياء مدية قبل آخر حرف في الآية',
+  },
+  {
+    rule: 'madd-arid-lissukoon.4',
+    matches: ['26:94', '26:224', '32:18'],
+    exactlyOccurrences: 3,
+    why: 'ٱلۡغَاوُۥنَ، يَسۡتَوُۥنَ — الواو المدية مكتوبة واوا صغيرة قبل آخر حرف في الآية',
+  },
+  {
     rule: 'madd-munfasil.1',
     matches: ['101:3', '2:12', '2:32'],
     avoids: ['1:1'],

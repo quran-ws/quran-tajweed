@@ -73,7 +73,7 @@ const pinned = new Set(pinnedRules)
  * check in the first place. Deriving it would rebuild the defect inside its own
  * fix.
  */
-const EXPECTED_FIXTURE_COUNT = 12
+const EXPECTED_FIXTURE_COUNT = 16
 
 /**
  * Rules that SHOULD have a fixture and do not. Pinned by name, not waved through.

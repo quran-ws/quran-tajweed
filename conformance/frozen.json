@@ -7154,6 +7154,26 @@
    "ayahs": 29,
    "occurrences": 44,
    "digest": "12b369732e323001"
+  },
+  "madd-arid-lissukoon.1": {
+   "ayahs": 344,
+   "occurrences": 344,
+   "digest": "3bb99fc785f896d8"
+  },
+  "madd-arid-lissukoon.2": {
+   "ayahs": 1936,
+   "occurrences": 1936,
+   "digest": "84c31f58a45a58a1"
+  },
+  "madd-arid-lissukoon.3": {
+   "ayahs": 2255,
+   "occurrences": 2255,
+   "digest": "9cf872cee94687bd"
+  },
+  "madd-arid-lissukoon.4": {
+   "ayahs": 3,
+   "occurrences": 3,
+   "digest": "834c4fe8b32beca1"
   }
  }
 }
