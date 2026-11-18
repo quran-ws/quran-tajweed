@@ -8,7 +8,7 @@
 import { describe, expect, it } from 'vitest'
 
 import corpus from '../../rules/rules.json' with { type: 'json' }
-import { Tajweed, resolveOverlaps, sliceSpan } from '../src/engine.js'
+import { Tajweed, resolveOverlaps, sliceSpan, toFocus } from '../src/engine.js'
 import type { Corpus, Span } from '../src/types.js'
 import { RICH_AYAH, ayah } from './fixtures.js'
 
@@ -132,6 +132,8 @@ describe('resolveOverlaps', () => {
   const span = (start: number, end: number, ruleId: string): Span => ({
     start,
     end,
+    focusStart: start,
+    focusEnd: end,
     ruleId,
     hukumId: 'h',
     categoryId: 'c',
@@ -152,5 +154,48 @@ describe('resolveOverlaps', () => {
   it('leaves non-overlapping spans alone', () => {
     const spans = [span(0, 2, 'a'), span(2, 4, 'b')]
     expect(resolveOverlaps(spans)).toEqual(spans)
+  })
+})
+
+describe('focus', () => {
+  const engine = new Tajweed(typed)
+  it('narrows قلقلة صغرى to the qalqalah letter, not the letter after it', () => {
+    // 2:7 أَبۡصَٰرِهِمۡ: the match is بۡص; the ruling is on the ب.
+    const text = ayah('2:7')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'qalqalah-sughra.1')!
+    expect([...text].slice(span.start, span.end).join('')).toBe('بۡص')
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('بۡ')
+  })
+
+  it('narrows المد الطبيعي to the madd letter', () => {
+    // 2:6 ٱلَّذِينَ: the match is ذِي; the madd is the ي.
+    const text = ayah('2:6')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'madd-tabee-kalimi.3')!
+    expect([...text].slice(span.start, span.end).join('')).toBe('ذِي')
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('ي')
+  })
+
+  it('keeps both letters for a ruling between two letters', () => {
+    // 2:6 أَنذَرۡتَهُمۡ: إخفاء is the noon and the letter it hides before.
+    const text = ayah('2:6')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'ikhfa-haqiqi-noon.1')!
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('نذ')
+    expect([span.focusStart, span.focusEnd]).toEqual([span.start, span.end])
+  })
+
+  it('is the whole span for a rule without a focus', () => {
+    for (const span of engine.analyze(text)) {
+      const rule = typed.rules.find((r) => r.id === span.ruleId)!
+      if (!rule.focus) {
+        expect([span.focusStart, span.focusEnd]).toEqual([span.start, span.end])
+      }
+    }
+  })
+
+  it('toFocus gives renderers the focus as start and end', () => {
+    const text = ayah('2:7')
+    const focused = toFocus(engine.analyze(text))
+    const qalqalah = focused.find((s) => s.ruleId === 'qalqalah-sughra.1')!
+    expect([...text].slice(qalqalah.start, qalqalah.end).join('')).toBe('بۡ')
   })
 })

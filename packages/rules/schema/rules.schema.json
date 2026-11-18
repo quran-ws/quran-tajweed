@@ -265,6 +265,13 @@
         "notes": {
           "$ref": "#/$defs/label"
         },
+        "focus": {
+          "type": "array",
+          "description": "The groups of `case`, as an inclusive [from, to] range of 0-based indices, that hold the letter or letters the ruling is about; the other groups are the condition. Compiled as a named capture, and reported as a span's focusStart/focusEnd, which is what a renderer colours. Rules about two letters together (idgham, ikhfa, iqlab, izhar) cover both. Absent on single-group rules, whose whole match is the focus.",
+          "items": { "type": "integer", "minimum": 0 },
+          "minItems": 2,
+          "maxItems": 2
+        },
         "startFrom": {
           "type": "string",
           "description": "Editorial annotation, NOT a pattern — do not compile it. Depending on the rule it marks where a highlight should visually begin (typically the first group of `case`), or gives the plain undiacritised spelling of the target word."

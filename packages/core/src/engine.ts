@@ -6,7 +6,7 @@
  * engine that returns HTML is useful only to the last person who needed HTML.
  */
 
-import { compileRule } from './compile.js'
+import { compileRule, FOCUS_GROUP } from './compile.js'
 import { normalize, type Normalized } from './normalize.js'
 import { toSourceRange } from './mapped.js'
 import { toCodePoints } from './unicode.js'
@@ -135,8 +135,21 @@ export class Tajweed {
           ? { start, end }
           : toSourceRange(normalized, start, end, normalized.sourceLength)
 
+        // The focus capture, mapped back the same way as the span.
+        const capture = match.indices?.groups?.[FOCUS_GROUP]
+        let focus = { start: range.start, end: range.end }
+        if (capture) {
+          const focusStart = codePointIndex(subject, capture[0])
+          const focusEnd = codePointIndex(subject, capture[1])
+          focus = onOriginal
+            ? { start: focusStart, end: focusEnd }
+            : toSourceRange(normalized, focusStart, focusEnd, normalized.sourceLength)
+        }
+
         spans.push({
           ...range,
+          focusStart: focus.start,
+          focusEnd: focus.end,
           ruleId: entry.rule.id,
           hukumId: entry.hukumId,
           categoryId: entry.categoryId,
@@ -174,6 +187,23 @@ export class Tajweed {
     }
     return cached
   }
+}
+
+/**
+ * Narrows each span to its focus: the letter or letters the ruling is about,
+ * without the letters that only trigger it.
+ *
+ * A span is the whole match, so for قلقلة صغرى in أَبۡصَٰرِهِمۡ it is بۡص, and
+ * colouring the span colours the ص that merely follows. Renderers colour the
+ * focus. Spans keep their full extent as data, because the condition is part of
+ * what was found.
+ */
+export function toFocus(spans: readonly Span[]): Span[] {
+  return spans.map((span) =>
+    span.focusStart === span.start && span.focusEnd === span.end
+      ? span
+      : { ...span, start: span.focusStart, end: span.focusEnd },
+  )
 }
 
 /**

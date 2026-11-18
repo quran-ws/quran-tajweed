@@ -46,7 +46,16 @@ export interface CompilableRule {
    * caller's string as written.
    */
   readonly matchAgainst?: 'normalized' | 'original'
+  /**
+   * The groups of `case`, as an inclusive `[from, to]` range of indices, that
+   * hold the letter or letters the ruling is about. The rest of the pattern is
+   * the condition. Compiled as the named capture `focus`.
+   */
+  readonly focus?: readonly [number, number]
 }
+
+/** Named capture holding a rule's focus groups. */
+export const FOCUS_GROUP = 'focus'
 
 /** Named marks the notation spells out because they are hard to type. */
 const NAMED_MARKS: ReadonlyArray<readonly [string, string]> = [
@@ -235,9 +244,24 @@ export function compileRule(rule: CompilableRule): RegExp {
   }
 
   const separator = separatorFor(rule.scope)
-  const source = groups
-    .map((group) => `(?:${compileGroup(group)})`)
-    .join(separator)
+  const compiled = groups.map((group) => `(?:${compileGroup(group)})`)
 
-  return new RegExp(source, 'gu')
+  if (!rule.focus) {
+    return new RegExp(compiled.join(separator), 'gu')
+  }
+
+  const [from, to] = rule.focus
+  if (!(Number.isInteger(from) && Number.isInteger(to) && from >= 0 && from <= to && to < groups.length)) {
+    throw new Error(`focus [${from}, ${to}] is outside the ${groups.length} groups of "${rule.case}"`)
+  }
+
+  // The focus groups, with the separators between them, become one named
+  // capture; `d` makes its offsets available. Which positions match is unchanged.
+  const source = [
+    ...compiled.slice(0, from),
+    `(?<${FOCUS_GROUP}>${compiled.slice(from, to + 1).join(separator)})`,
+    ...compiled.slice(to + 1),
+  ].join(separator)
+
+  return new RegExp(source, 'gud')
 }

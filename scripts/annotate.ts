@@ -15,7 +15,7 @@ import { dirname, join, resolve } from 'node:path'
 import corpus from '../packages/rules/rules.json' with { type: 'json' }
 import { Tajweed } from '../packages/core/src/engine.js'
 import { editionDigest, orderedReferences, type Edition } from '../packages/core/src/edition.js'
-import type { Annotations, PackedSpan } from '../packages/core/src/annotations.js'
+import { packSpan, type Annotations, type PackedSpan } from '../packages/core/src/annotations.js'
 import type { Corpus } from '../packages/core/src/types.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -54,7 +54,7 @@ for (const reference of references) {
     continue
   }
 
-  spans[reference] = found.map((span) => [span.start, span.end, ruleIndex.get(span.ruleId)!])
+  spans[reference] = found.map((span) => packSpan(span, ruleIndex.get(span.ruleId)!))
   total += found.length
   annotatedAyahs += 1
 }

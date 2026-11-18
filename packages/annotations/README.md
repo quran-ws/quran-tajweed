@@ -24,11 +24,12 @@ annotations.ruleIds.length  // 164
 
 ## The shape
 
-`spans` is keyed by `"surah:ayah"`, and each span is a packed triple:
+`spans` is keyed by `"surah:ayah"`, and each span is a packed triple, followed
+by two more numbers when the ruling is about only part of the match:
 
 ```js
 annotations.spans['1:1']
-// [[8, 10, 52], [17, 18, 22], [22, 25, 129], [30, 31, 22], [33, 36, 131]]
+// [[8, 10, 52], [17, 18, 22], [22, 25, 129, 24, 25], [30, 31, 22], [33, 36, 131, 35, 36]]
 //    ↑   ↑   ↑
 //    │   │   └─ index into annotations.ruleIds
 //    │   └───── end, half-open
@@ -39,6 +40,20 @@ annotations.spans['1:1']
 const [start, end, rule] = annotations.spans['1:1'][0]
 annotations.ruleIds[rule]                  // 'mutamathilain-idgham-kamil.23'
 [...ayahText].slice(start, end).join('')   // 'لل'
+```
+
+### The focus
+
+`start` and `end` cover the whole match, condition included. The fourth and
+fifth numbers, when present, are `focusStart` and `focusEnd`: the letter or
+letters the ruling is about. Colour those. In `[22, 25, 129, 24, 25]` the match
+is `مَٰ` and the ruling is on `ٰ` alone; in قلقلة صغرى the match is the
+qalqalah letter and the letter after it, and the focus is the qalqalah letter.
+A three-number span's focus is the whole span. Rulings between two letters
+(idgham, ikhfa, iqlab, izhar) keep both in the focus.
+
+```js
+const [start, end, rule, focusStart = start, focusEnd = end] = span
 ```
 
 Offsets are **code-point positions**, so index with `[...text]` or

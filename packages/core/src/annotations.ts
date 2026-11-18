@@ -11,8 +11,21 @@
 
 import type { Corpus, Span } from './types.js'
 
-/** `[start, end, ruleIndex]` — indices into `ruleIds`. */
-export type PackedSpan = readonly [start: number, end: number, rule: number]
+/**
+ * `[start, end, ruleIndex]`, with `ruleIndex` an index into `ruleIds`, followed
+ * by `focusStart, focusEnd` when the rule's focus is narrower than the span.
+ * A three-element span's focus is the whole span.
+ */
+export type PackedSpan =
+  | readonly [start: number, end: number, rule: number]
+  | readonly [start: number, end: number, rule: number, focusStart: number, focusEnd: number]
+
+/** Packs a span, leaving the focus out when it is the whole span. */
+export function packSpan(span: Span, ruleIndex: number): PackedSpan {
+  return span.focusStart === span.start && span.focusEnd === span.end
+    ? [span.start, span.end, ruleIndex]
+    : [span.start, span.end, ruleIndex, span.focusStart, span.focusEnd]
+}
 
 export interface Annotations {
   readonly corpusVersion: string
@@ -44,7 +57,7 @@ export function unpack(annotations: Annotations, corpus: Corpus, reference: stri
 
   const lineage = lineageIndex(corpus)
 
-  return packed.map(([start, end, ruleIndex]) => {
+  return packed.map(([start, end, ruleIndex, focusStart = start, focusEnd = end]) => {
     const ruleId = annotations.ruleIds[ruleIndex]
     if (ruleId === undefined) {
       throw new Error(
@@ -60,7 +73,7 @@ export function unpack(annotations: Annotations, corpus: Corpus, reference: stri
           `v${annotations.corpusVersion}.`,
       )
     }
-    return { start, end, ruleId, ...found }
+    return { start, end, focusStart, focusEnd, ruleId, ...found }
   })
 }
 

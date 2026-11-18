@@ -16,6 +16,7 @@ import {
   bridgeJoins,
   clusterEnd,
   resolveOverlaps,
+  toFocus,
   type Corpus,
   type Span,
   type TajweedOptions,
@@ -78,7 +79,8 @@ export function TajweedText({
   )
 
   const resolved = useMemo(() => {
-    const found = spans ?? engine?.analyze(text) ?? []
+    // Only the focus is coloured: the letters a ruling is about, not its condition.
+    const found = toFocus(spans ?? engine?.analyze(text) ?? [])
     return overlapping ? [...found].sort((a, b) => a.start - b.start) : resolveOverlaps(found)
   }, [spans, engine, text, overlapping])
 

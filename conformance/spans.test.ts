@@ -84,6 +84,21 @@ describe.each(editions)('spans index the text they were computed from — $id', 
     expect(problems.slice(0, 10)).toEqual([])
   })
 
+  it('keeps every focus inside its span, and never empty where the span is not', () => {
+    const problems: string[] = []
+    for (const reference of references) {
+      for (const span of engine.analyze(edition.ayahs[reference]!)) {
+        if (span.focusStart < span.start || span.focusEnd > span.end || span.focusStart > span.focusEnd) {
+          problems.push(`${reference} ${span.ruleId} focus ${span.focusStart}..${span.focusEnd} outside ${span.start}..${span.end}`)
+        }
+        if (span.end > span.start && span.focusEnd <= span.focusStart) {
+          problems.push(`${reference} ${span.ruleId} has an empty focus`)
+        }
+      }
+    }
+    expect(problems.slice(0, 10)).toEqual([])
+  })
+
   it('reports a zero-width span only from the one rule known to, and only as often', () => {
     const zeroWidth = new Map<string, number>()
     for (const reference of references) {

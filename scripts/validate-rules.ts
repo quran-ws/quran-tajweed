@@ -114,6 +114,21 @@ for (const rule of corpus.rules) {
     problems.push(`rule ${rule.id} is single-group but is scoped ${rule.scope}`)
   }
 
+  // A focus names which groups the ruling is about, so it needs groups to name,
+  // and every multi-group rule needs one: without it a renderer colours the
+  // condition letters as if the ruling were on them.
+  const groupCount = rule.case.split('+').length
+  if (rule.focus) {
+    const [from, to] = rule.focus
+    if (!isMultiGroup) {
+      problems.push(`rule ${rule.id} has a focus but only one group`)
+    } else if (!(from <= to && to < groupCount)) {
+      problems.push(`rule ${rule.id} focus [${from}, ${to}] is outside its ${groupCount} groups`)
+    }
+  } else if (isMultiGroup && rule.gap !== 'not-a-pattern') {
+    problems.push(`rule ${rule.id} has ${groupCount} groups but no focus`)
+  }
+
   // The bracket structure of a CASE, checked before anything reads it.
   //
   // compile.ts strips brackets indiscriminately — `stripBrackets` does
