@@ -66,8 +66,8 @@ export interface Rule {
    * hold the letter or letters the ruling is about. The other groups are the
    * condition that triggers it: in `[قْ طْ بْ جْ دْ] + غير مدغم + [...]` the
    * focus is `[0, 0]`, the qalqalah letter, and the letter after it only
-   * qualifies the match. Rules about two letters together (idgham, ikhfa,
-   * iqlab, izhar) cover both. Absent on single-group rules, whose whole match
+   * qualifies the match. Idgham and izhar, rulings between two letters, cover
+   * both; ikhfa and iqlab cover only the noon, tanween or meem. Absent on single-group rules, whose whole match
    * is the focus.
    */
   readonly focus?: readonly [number, number]

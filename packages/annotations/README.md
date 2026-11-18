@@ -49,8 +49,9 @@ fifth numbers, when present, are `focusStart` and `focusEnd`: the letter or
 letters the ruling is about. Colour those. In `[22, 25, 129, 24, 25]` the match
 is `مَٰ` and the ruling is on `ٰ` alone; in قلقلة صغرى the match is the
 qalqalah letter and the letter after it, and the focus is the qalqalah letter.
-A three-number span's focus is the whole span. Rulings between two letters
-(idgham, ikhfa, iqlab, izhar) keep both in the focus.
+A three-number span's focus is the whole span. Idgham and izhar, rulings
+between two letters, keep both in the focus; ikhfa and iqlab keep only the
+noon, tanween or meem.
 
 ```js
 const [start, end, rule, focusStart = start, focusEnd = end] = span

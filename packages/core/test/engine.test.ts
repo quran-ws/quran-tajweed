@@ -175,12 +175,20 @@ describe('focus', () => {
     expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('ي')
   })
 
-  it('keeps both letters for a ruling between two letters', () => {
-    // 2:6 أَنذَرۡتَهُمۡ: إخفاء is the noon and the letter it hides before.
+  it('narrows إخفاء to the hidden noon', () => {
+    // 2:6 أَنذَرۡتَهُمۡ: the match is نذ; the noon is what is hidden.
     const text = ayah('2:6')
     const span = engine.analyze(text).find((s) => s.ruleId === 'ikhfa-haqiqi-noon.1')!
-    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('نذ')
+    expect([...text].slice(span.start, span.end).join('')).toBe('نذ')
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('ن')
+  })
+
+  it('keeps both letters for إدغام, a ruling between two letters', () => {
+    // 2:10 قُلُوبِهِم مَّرَضࣱ: the meem merges into the meem after it.
+    const text = ayah('2:10')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'idgham-shafawi-meem.1')!
     expect([span.focusStart, span.focusEnd]).toEqual([span.start, span.end])
+    expect([...text].slice(span.focusStart, span.focusEnd).join('').replace(/\s/g, '')).toBe('مم')
   })
 
   it('is the whole span for a rule without a focus', () => {
