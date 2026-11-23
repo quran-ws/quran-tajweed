@@ -1,7 +1,7 @@
 # @quran.ws/tajwid-annotations
 
-Precomputed tajweed annotations for the whole muṣḥaf: **147,255 spans** from
-**164 rules**, across **6,235 of the 6,236 āyāt** of the riwāyah of
+Precomputed tajweed annotations for the whole muṣḥaf: **153,809 spans** from
+**168 rules**, across **6,235 of the 6,236 āyāt** of the riwāyah of
 **Ḥafṣ ʿan ʿĀṣim**.
 
 This package is data only. It has no dependencies and no code. It exists so an
@@ -19,16 +19,17 @@ import annotations from '@quran.ws/tajwid-annotations'
 annotations.corpusVersion   // '0.4.2'
 annotations.riwayah         // 'hafs-an-asim'
 annotations.edition.sha256  // 'b5d29736…' — the text these offsets are measured against
-annotations.ruleIds.length  // 164
+annotations.ruleIds.length  // 168
 ```
 
 ## The shape
 
-`spans` is keyed by `"surah:ayah"`, and each span is a packed triple:
+`spans` is keyed by `"surah:ayah"`, and each span is a packed triple, followed
+by two more numbers when the ruling is about only part of the match:
 
 ```js
 annotations.spans['1:1']
-// [[8, 10, 52], [17, 18, 22], [22, 25, 129], [30, 31, 22], [33, 36, 131]]
+// [[8, 10, 52], [17, 18, 22], [22, 25, 129, 24, 25], [30, 31, 22], [33, 38, 166, 35, 36], [33, 36, 131, 35, 36]]
 //    ↑   ↑   ↑
 //    │   │   └─ index into annotations.ruleIds
 //    │   └───── end, half-open
@@ -39,6 +40,23 @@ annotations.spans['1:1']
 const [start, end, rule] = annotations.spans['1:1'][0]
 annotations.ruleIds[rule]                  // 'mutamathilain-idgham-kamil.23'
 [...ayahText].slice(start, end).join('')   // 'لل'
+```
+
+### The focus
+
+`start` and `end` cover the whole match, condition included. The fourth and
+fifth numbers, when present, are `focusStart` and `focusEnd`: the letter or
+letters the ruling is about. Colour those. In `[22, 25, 129, 24, 25]` the match
+is `مَٰ` and the ruling is on `ٰ` alone; in قلقلة صغرى the match is the
+qalqalah letter and the letter after it, and the focus is the qalqalah letter.
+A three-number span's focus is the whole span. Idgham and izhar, rulings
+between two letters, keep both in the focus; ikhfa and iqlab keep only the
+noon, tanween or meem. A tanween ruling is on the tanween, so its focus starts at
+the tanween mark, not at the letter carrying it: the tanween alone for izhar,
+ikhfa and iqlab, the tanween through the next letter for idgham.
+
+```js
+const [start, end, rule, focusStart = start, focusEnd = end] = span
 ```
 
 Offsets are **code-point positions**, so index with `[...text]` or

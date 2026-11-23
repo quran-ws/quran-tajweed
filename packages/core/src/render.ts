@@ -8,9 +8,9 @@
  * can actually tell apart.
  */
 
-import { resolveOverlaps } from './engine.js'
+import { resolveOverlaps, toFocus } from './engine.js'
 import { bridgeJoins, clusterEndIn } from './shaping.js'
-import { ALLOWED_MARKS, toCodePoints } from './unicode.js'
+import { ALLOWED_MARKS, isStackedMark, toCodePoints } from './unicode.js'
 import type { Corpus, Span } from './types.js'
 
 /**
@@ -83,7 +83,9 @@ export function toHtml(ayahText: string, spans: readonly Span[], corpus: Corpus,
   const { flatten = true, colors = TOPIC_COLORS, describe } = options
   const label = describe ?? defaultDescribe(corpus)
   const chars = toCodePoints(ayahText)
-  const ordered = flatten ? resolveOverlaps(spans) : [...spans].sort((a, b) => a.start - b.start)
+  // Only the focus is coloured: the letters a ruling is about, not its condition.
+  const focused = toFocus(spans)
+  const ordered = flatten ? resolveOverlaps(focused) : [...focused].sort((a, b) => a.start - b.start)
 
   // Each piece becomes its own element, so each piece is a cut the shaper has to
   // be told about. They are collected before anything is written, because a
@@ -92,7 +94,9 @@ export function toHtml(ayahText: string, spans: readonly Span[], corpus: Corpus,
   let cursor = 0
 
   for (const span of ordered) {
-    const start = clusterEndIn(chars, span.start)
+    // A focus can start on a mark (a tanween ruling is on the tanween). Text
+    // cannot colour a mark apart from its letter, so the letter comes with it.
+    const start = clusterStartIn(chars, span.start)
     const end = clusterEndIn(chars, span.end)
     if (start < cursor) {
       continue
@@ -155,13 +159,22 @@ const ANSI: Readonly<Record<string, string>> = {
 }
 const RESET = '[0m'
 
+/** Moves an offset that lands on a mark back to the letter the mark is written on. */
+function clusterStartIn(chars: readonly string[], start: number): number {
+  let out = start
+  while (out > 0 && isStackedMark(chars[out])) {
+    out -= 1
+  }
+  return out
+}
+
 /** The same colouring for a terminal. */
 export function toAnsi(ayahText: string, spans: readonly Span[]): string {
   const chars = toCodePoints(ayahText)
   const out: string[] = []
   let cursor = 0
 
-  for (const span of resolveOverlaps(spans)) {
+  for (const span of resolveOverlaps(toFocus(spans))) {
     if (span.start < cursor) {
       continue
     }

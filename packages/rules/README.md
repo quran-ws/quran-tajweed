@@ -1,6 +1,6 @@
 # @quran.ws/tajwid-rules
 
-The tajweed rule corpus: **7 topics → 27 categories → 58 ahkam → 182 rules**, for the riwayah of **Hafs ʿan ʿĀsim**.
+The tajweed rule corpus: **7 topics → 28 categories → 59 ahkam → 186 rules**, for the riwayah of **Hafs ʿan ʿĀsim**.
 
 This package is data only. It has no dependencies and no code. The engine that
 runs it lives in [`@quran.ws/tajwid`](../core).
@@ -13,7 +13,7 @@ npm install @quran.ws/tajwid-rules
 import corpus from '@quran.ws/tajwid-rules'
 
 corpus.riwayah // 'hafs-an-asim'
-corpus.rules.filter((rule) => rule.status === 'stable').length // 164
+corpus.rules.filter((rule) => rule.status === 'stable').length // 166
 ```
 
 ## Shape
@@ -57,7 +57,7 @@ Quranic annotation marks are always allowed between groups, in every scope.
 
 ## Status, and why disabled rules ship anyway
 
-164 rules are `stable`. 18 are `disabled` — published, but not matched by
+166 rules are `stable`. 18 are `disabled` — published, but not matched by
 default.
 
 They are kept rather than deleted because a silently missing rule looks exactly

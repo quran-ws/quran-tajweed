@@ -8,7 +8,7 @@
 import { describe, expect, it } from 'vitest'
 
 import corpus from '../../rules/rules.json' with { type: 'json' }
-import { Tajweed, resolveOverlaps, sliceSpan } from '../src/engine.js'
+import { Tajweed, resolveOverlaps, sliceSpan, toFocus } from '../src/engine.js'
 import type { Corpus, Span } from '../src/types.js'
 import { RICH_AYAH, ayah } from './fixtures.js'
 
@@ -132,6 +132,8 @@ describe('resolveOverlaps', () => {
   const span = (start: number, end: number, ruleId: string): Span => ({
     start,
     end,
+    focusStart: start,
+    focusEnd: end,
     ruleId,
     hukumId: 'h',
     categoryId: 'c',
@@ -152,5 +154,112 @@ describe('resolveOverlaps', () => {
   it('leaves non-overlapping spans alone', () => {
     const spans = [span(0, 2, 'a'), span(2, 4, 'b')]
     expect(resolveOverlaps(spans)).toEqual(spans)
+  })
+})
+
+describe('focus', () => {
+  const engine = new Tajweed(typed)
+  it('narrows قلقلة صغرى to the qalqalah letter, not the letter after it', () => {
+    // 2:7 أَبۡصَٰرِهِمۡ: the match is بۡص; the ruling is on the ب.
+    const text = ayah('2:7')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'qalqalah-sughra.1')!
+    expect([...text].slice(span.start, span.end).join('')).toBe('بۡص')
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('بۡ')
+  })
+
+  it('narrows المد الطبيعي to the madd letter', () => {
+    // 2:6 ٱلَّذِينَ: the match is ذِي; the madd is the ي.
+    const text = ayah('2:6')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'madd-tabee-kalimi.3')!
+    expect([...text].slice(span.start, span.end).join('')).toBe('ذِي')
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('ي')
+  })
+
+  it('narrows إخفاء to the hidden noon', () => {
+    // 2:6 أَنذَرۡتَهُمۡ: the match is نذ; the noon is what is hidden.
+    const text = ayah('2:6')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'ikhfa-haqiqi-noon.1')!
+    expect([...text].slice(span.start, span.end).join('')).toBe('نذ')
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('ن')
+  })
+
+  it('keeps both letters for إدغام, a ruling between two letters', () => {
+    // 2:10 قُلُوبِهِم مَّرَضࣱ: the meem merges into the meem after it.
+    const text = ayah('2:10')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'idgham-shafawi-meem.1')!
+    expect([span.focusStart, span.focusEnd]).toEqual([span.start, span.end])
+    expect([...text].slice(span.focusStart, span.focusEnd).join('').replace(/\s/g, '')).toBe('مم')
+  })
+
+  it('narrows a tanween ruling to the tanween, not the letter carrying it', () => {
+    // 2:10 مَرَضࣱ فَزَادَهُمُ: إخفاء of the tanween; the ض only carries it. This
+    // edition writes the open dammatan as U+065E.
+    const text = ayah('2:10')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'ikhfa-haqiqi-tanween.2')!
+    expect([...text].slice(span.start, span.end).join('')).toMatch(/^ض/u)
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('\u{065E}')
+  })
+
+  it('narrows إقلاب of a tanween to its haraka and small meem', () => {
+    // 2:10 أَلِيمُۢ بِمَا: the tanween of iqlab is written ُ + ۢ.
+    const text = ayah('2:10')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'iqlab-tanween.2')!
+    expect([...text].slice(span.focusStart, span.focusEnd).join('')).toBe('\u{064F}\u{06E2}')
+  })
+
+  it('runs a tanween إدغام from the tanween through the next letter', () => {
+    // 2:7 غِشَٰوَةࣱۖ وَلَهُمۡ: the tanween merges into the و; the ة is not coloured.
+    const text = ayah('2:7')
+    const span = engine.analyze(text).find((s) => s.ruleId === 'idgham-bi-ghunnah-tanween.2')!
+    const focus = [...text].slice(span.focusStart, span.focusEnd).join('')
+    expect(focus.startsWith('\u{065E}')).toBe(true)
+    expect(focus.endsWith('و')).toBe(true)
+  })
+
+  it('is the whole span for a rule without a focus', () => {
+    for (const span of engine.analyze(text)) {
+      const rule = typed.rules.find((r) => r.id === span.ruleId)!
+      if (!rule.focus) {
+        expect([span.focusStart, span.focusEnd]).toEqual([span.start, span.end])
+      }
+    }
+  })
+
+  it('toFocus gives renderers the focus as start and end', () => {
+    const text = ayah('2:7')
+    const focused = toFocus(engine.analyze(text))
+    const qalqalah = focused.find((s) => s.ruleId === 'qalqalah-sughra.1')!
+    expect([...text].slice(qalqalah.start, qalqalah.end).join('')).toBe('بۡ')
+  })
+})
+
+describe('المد المنفصل', () => {
+  const engine = new Tajweed(typed)
+  const focusesOf = (reference: string, prefix: string): string[] => {
+    const text = ayah(reference)
+    return engine
+      .analyze(text)
+      .filter((s) => s.ruleId.startsWith(prefix))
+      .map((s) => [...text].slice(s.focusStart, s.focusEnd).join(''))
+  }
+
+  it('matches where the vowelled letter and the madd letter touch in one word', () => {
+    // 2:14 قَالُوٓاْ ءَامَنَّا: the madd letter ends the word, the hamza begins the next.
+    const focuses = focusesOf('2:14', 'madd-munfasil.3')
+    expect(focuses.length).toBeGreaterThan(0)
+    expect(focuses.every((focus) => focus.startsWith('و'))).toBe(true)
+  })
+
+  it('matches before a word that opens with hamza-below', () => {
+    // 2:12 أَلَآ إِنَّهُمۡ
+    expect(focusesOf('2:12', 'madd-munfasil.1').length).toBeGreaterThan(0)
+  })
+
+  it('does not take an alef that is not read when the reading continues', () => {
+    // 2:258 أَنَا۠ أُحۡيِۦ: the alef of أنا is dropped in continuous reading.
+    const text = ayah('2:258')
+    const at = [...text].join('').indexOf('أَنَا۠')
+    const spans = engine.analyze(text).filter((s) => s.ruleId.startsWith('madd-munfasil'))
+    expect(spans.some((s) => s.focusStart >= at && s.focusStart < at + 6)).toBe(false)
   })
 })

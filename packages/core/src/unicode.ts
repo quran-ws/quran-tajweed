@@ -90,6 +90,7 @@ export const INVERTED_DAMMA = '\u{0657}' // ٗ
 export const SUBSCRIPT_ALEF = '\u{0656}' // ٖ
 export const FATHATAN_VERTICAL = '\u{065E}' // ٞ
 export const RECTANGULAR_ZERO = '\u{06E0}' // ۠
+export const ROUNDED_ZERO = '\u{06DF}' // ۟
 
 /**
  * The open tanween of the Arabic Extended-A block.

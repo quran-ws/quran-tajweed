@@ -46,7 +46,16 @@ export interface CompilableRule {
    * caller's string as written.
    */
   readonly matchAgainst?: 'normalized' | 'original'
+  /**
+   * The groups of `case`, as an inclusive `[from, to]` range of indices, that
+   * hold the letter or letters the ruling is about. The rest of the pattern is
+   * the condition. Compiled as the named capture `focus`.
+   */
+  readonly focus?: readonly [number, number]
 }
+
+/** Named capture holding a rule's focus groups. */
+export const FOCUS_GROUP = 'focus'
 
 /** Named marks the notation spells out because they are hard to type. */
 const NAMED_MARKS: ReadonlyArray<readonly [string, string]> = [
@@ -112,20 +121,25 @@ const ALLOWED_ALTERNATION = ALLOWED_MARKS.map(escapeCodePoint).join('|')
 /**
  * What may appear between two groups, by scope.
  *
- * `across-words` is a faithful port of the legacy engine and is looser than its
- * name: it requires at least one separator, but a diacritic satisfies that just
- * as a space does, so it does not actually oblige the groups to be in different
- * words. Tightening it would change what 22 rules match and is left for a change
- * that can be reviewed on its own.
+ * `across-words` puts the word break before the LAST group: the groups before
+ * it are one word (only marks between them), and a space must come before the
+ * last. That is the shape of every rule with this scope: idgham of a noon or
+ * tanween into the next word's first letter, and المد المنفصل, whose madd letter
+ * ends one word and whose hamza begins the next. The legacy engine required "at
+ * least one separator" in every gap, where a diacritic counted as one; that
+ * missed munfasil wherever the vowelled letter and its madd letter touch
+ * (قَالُوٓا۟ ءَامَنَّا), and did not oblige a space at all. See docs/divergences.md.
  */
-function separatorFor(scope: Scope): string {
+function separatorFor(scope: Scope, beforeLastGroup: boolean): string {
   switch (scope) {
     case 'within-word':
       return `(?:${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
     case 'either':
       return `(?:\\s|${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
     case 'across-words':
-      return `(?:\\s+|${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})+`
+      return beforeLastGroup
+        ? `(?:${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*\\s(?:\\s|${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
+        : `(?:${ALLOWED_ALTERNATION}|${BETWEEN_MARKS})*`
   }
 }
 
@@ -234,10 +248,32 @@ export function compileRule(rule: CompilableRule): RegExp {
     return new RegExp(`(?:${group})(?:${ALLOWED_ALTERNATION})*`, 'gu')
   }
 
-  const separator = separatorFor(rule.scope)
-  const source = groups
-    .map((group) => `(?:${compileGroup(group)})`)
-    .join(separator)
+  const compiled = groups.map((group) => `(?:${compileGroup(group)})`)
+  // Joins compiled groups `from`..`to` (inclusive) with the separator each gap takes.
+  const joined = (from: number, to: number): string =>
+    compiled
+      .slice(from, to + 1)
+      .map((group, offset) =>
+        offset === 0 ? group : separatorFor(rule.scope, from + offset === groups.length - 1) + group,
+      )
+      .join('')
 
-  return new RegExp(source, 'gu')
+  if (!rule.focus) {
+    return new RegExp(joined(0, groups.length - 1), 'gu')
+  }
+
+  const [from, to] = rule.focus
+  if (!(Number.isInteger(from) && Number.isInteger(to) && from >= 0 && from <= to && to < groups.length)) {
+    throw new Error(`focus [${from}, ${to}] is outside the ${groups.length} groups of "${rule.case}"`)
+  }
+
+  // The focus groups, with the separators between them, become one named
+  // capture; `d` makes its offsets available. Which positions match is unchanged.
+  const gap = (index: number): string => separatorFor(rule.scope, index === groups.length - 1)
+  const source =
+    (from > 0 ? joined(0, from - 1) + gap(from) : '') +
+    `(?<${FOCUS_GROUP}>${joined(from, to)})` +
+    (to < groups.length - 1 ? gap(to + 1) + joined(to + 1, groups.length - 1) : '')
+
+  return new RegExp(source, 'gud')
 }

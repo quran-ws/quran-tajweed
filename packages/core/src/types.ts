@@ -61,6 +61,24 @@ export interface Rule {
   readonly label: Label
   readonly notes?: Label
   readonly startFrom?: string
+  /**
+   * The groups of `case`, as an inclusive `[from, to]` range of indices, that
+   * hold the letter or letters the ruling is about. The other groups are the
+   * condition that triggers it: in `[قْ طْ بْ جْ دْ] + غير مدغم + [...]` the
+   * focus is `[0, 0]`, the qalqalah letter, and the letter after it only
+   * qualifies the match. Idgham and izhar, rulings between two letters, cover
+   * both; ikhfa and iqlab cover only the noon, tanween or meem. Absent on single-group rules, whose whole match
+   * is the focus.
+   */
+  readonly focus?: readonly [number, number]
+  /**
+   * Where in its first group the focus begins. `tanween`: at the tanween mark,
+   * because a tanween ruling is on the tanween, not on the letter carrying it.
+   * With a one-group focus the focus is then the tanween alone (izhar, ikhfa,
+   * iqlab); with two groups it runs from the tanween through the next letter
+   * (idgham).
+   */
+  readonly focusStartsAt?: 'tanween'
 }
 
 export interface Corpus {
@@ -84,6 +102,13 @@ export interface Corpus {
 export interface Span {
   readonly start: number
   readonly end: number
+  /**
+   * The part of the span the ruling is about, in the same code-point offsets:
+   * the rule's `focus` groups. Equal to `start`/`end` for a rule without a
+   * focus. Colour this, not the whole span; the rest is the condition.
+   */
+  readonly focusStart: number
+  readonly focusEnd: number
   readonly ruleId: string
   readonly hukumId: string
   readonly categoryId: string

@@ -51,8 +51,10 @@ class Span:
     """One occurrence of one rule.
 
     ``start`` and ``end`` are half-open code-point offsets into the ayah text as
-    the edition has it, so ``ayah_text[span.start:span.end]`` is the stretch the
-    ruling concerns.
+    the edition has it, so ``ayah_text[span.start:span.end]`` is the whole match.
+    ``focus_start`` and ``focus_end`` are the part of it the ruling is about (the
+    rule's ``focus`` groups); colour those. They equal ``start`` and ``end`` for a
+    rule without a focus.
     """
 
     start: int
@@ -61,6 +63,14 @@ class Span:
     hukum_id: str
     category_id: str
     topic_id: str
+    focus_start: int = -1
+    focus_end: int = -1
+
+    def __post_init__(self) -> None:
+        if self.focus_start < 0:
+            object.__setattr__(self, "focus_start", self.start)
+        if self.focus_end < 0:
+            object.__setattr__(self, "focus_end", self.end)
 
 
 @dataclass(frozen=True)
@@ -175,7 +185,8 @@ class Annotations:
             return []
 
         spans = []
-        for start, end, rule_index in packed:
+        for start, end, rule_index, *focus in packed:
+            focus_start, focus_end = focus if focus else (start, end)
             rule_id = self._rule_ids[rule_index]
             hukum_id, category_id, topic_id = self.corpus.lineage(rule_id)
             spans.append(
@@ -186,6 +197,8 @@ class Annotations:
                     hukum_id=hukum_id,
                     category_id=category_id,
                     topic_id=topic_id,
+                    focus_start=focus_start,
+                    focus_end=focus_end,
                 )
             )
         return spans
