@@ -91,10 +91,10 @@
     ]
   },
   "rules": {
-    "compiled": 164,
+    "compiled": 168,
     "spans": {
-      "reference": 147255,
-      "other": 147257
+      "reference": 153809,
+      "other": 153811
     },
     "matchingDifferently": [
       {
